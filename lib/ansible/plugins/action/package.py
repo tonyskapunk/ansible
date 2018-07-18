@@ -42,6 +42,11 @@ class ActionModule(ActionBase):
 
         module = self._task.args.get('use', 'auto')
 
+        # Use deb argument when using a deb file
+        if self._task.args.get('name', '').endswith('.deb'):
+            self._task.args['deb'] = self._task.args['name']
+            del self._task.args['name']
+
         if module == 'auto':
             try:
                 if self._task.delegate_to:  # if we delegate, we should use delegated host's facts
